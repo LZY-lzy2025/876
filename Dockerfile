@@ -10,8 +10,8 @@ RUN apk --no-cache add ca-certificates
 WORKDIR /app
 COPY --from=builder /app/proxy .
 
-# 暴露端口，方便面板做映射 (如果你本地或服务器面板需要别的端口，在这里修改映射即可)
-ENV PORT=8080
-EXPOSE 8080
+# 暴露 10000 端口
+ENV PORT=10000
+EXPOSE 10000
 
 CMD ["./proxy"]
