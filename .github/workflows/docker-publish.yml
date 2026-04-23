@@ -7,8 +7,8 @@ on:
 
 env:
   REGISTRY: ghcr.io
-  # 镜像名称，自动获取你的 GitHub 用户名
-  IMAGE_NAME: ${{ github.repository_owner }}/ikun-tv-proxy
+  # 【核心修改点】直接写死全小写的用户名 lzy-lzy2025，并将项目名改为 876
+  IMAGE_NAME: lzy-lzy2025/876
 
 jobs:
   build-and-push-image:
@@ -26,7 +26,6 @@ jobs:
         with:
           registry: ${{ env.REGISTRY }}
           username: ${{ github.actor }}
-          # 自动注入 token，不需要额外配置
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Build and push Docker image
@@ -34,5 +33,4 @@ jobs:
         with:
           context: .
           push: true
-          # 自动打上 latest 标签
           tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
