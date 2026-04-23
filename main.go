@@ -13,7 +13,6 @@ import (
 )
 
 var (
-	// 用于提取 JSONP 中的核心 JSON 字符串
 	allRoomsRegex = regexp.MustCompile(`All_live_rooms\((.*)\)`)
 	detailRegex   = regexp.MustCompile(`Detail\((.*)\)`)
 )
@@ -21,7 +20,7 @@ var (
 func main() {
 	port := os.Getenv("PORT")
 	if port == "" {
-		port = "8080"
+		port = "10000" // 默认端口已修改为 10000
 	}
 
 	http.HandleFunc("/", handlePlaylist)         // 生成完整播放列表
@@ -43,7 +42,7 @@ func handlePlaylist(w http.ResponseWriter, r *http.Request) {
 		format = "m3u"
 	}
 
-	// 1. 去掉时间戳，直接请求全部房间列表接口
+	// 纯净路径，无时间戳
 	url := "https://json.yyzb456.top/all_live_rooms.json"
 
 	req, _ := http.NewRequest("GET", url, nil)
@@ -140,7 +139,7 @@ func handlePlay(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// 2. 去掉时间戳，直接请求指定房间的详情接口
+	// 纯净路径，无时间戳
 	url := fmt.Sprintf("https://json.yyzb456.top/room/%s/detail.json", roomNum)
 
 	req, _ := http.NewRequest("GET", url, nil)
@@ -185,6 +184,5 @@ func handlePlay(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// 执行 302 重定向到真实的播放源
 	http.Redirect(w, r, hdM3u8, http.StatusFound)
 }
